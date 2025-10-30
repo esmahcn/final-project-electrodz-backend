@@ -8,9 +8,25 @@ router.post("/login", (req, res) => {
 
   // Example simple check
   if (email === "admin@gmail.com" && password === "123456") {
-    return res.json({ success: true, message: "Login successful!" });
+    // ✅ include role
+    return res.json({ 
+      success: true, 
+      message: "Login successful!",
+      email, 
+      role: "admin" // add role so frontend can redirect
+    });
+  } else if (email === "user@gmail.com" && password === "123456") {
+    return res.json({
+      success: true,
+      message: "Login successful!",
+      email,
+      role: "user"
+    });
   } else {
-    return res.status(401).json({ success: false, message: "Invalid credentials" });
+    return res.status(401).json({ 
+      success: false, 
+      message: "Invalid credentials" 
+    });
   }
 });
 
