@@ -2,21 +2,30 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import path from "path";
-import { fileURLToPath } from "url"; // ✅ Add this
+import { fileURLToPath } from "url";
 import secrets from "./config/secrets.js";
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 
-// ✅ Needed for __dirname with ES Modules
+// Needed for __dirname with ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 
+// ✅ CORS Configuration (important part)
+app.use(cors({
+  origin: [
+    "http://localhost:5173",           // for local dev
+    "https://electrodz.netlify.app"    // for deployed frontend
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+
 // Middlewares
 app.use(express.json());
-app.use(cors());
 
 // ✅ Serve static files from uploads folder
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
